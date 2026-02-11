@@ -1,0 +1,19 @@
+[app]
+address = "0.0.0.0:9000"
+admin_username = "admin"
+admin_password = "change-this-password"
+
+[db]
+host = "postgres"
+port = 5432
+user = "listmonk"
+password = "super-strong-password"
+database = "listmonk"
+sslmode = "disable"
+
+[upload]
+provider = "local"
+path = "/listmonk/uploads"
+
+[smtp]
+enabled = false
