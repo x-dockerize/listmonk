@@ -4,7 +4,7 @@ services:
     container_name: listmonk
     restart: unless-stopped
     volumes:
-      - ./.docker/listmonk/data/uploads:/listmonk/uploads
+      - ./.docker/listmonk/uploads:/listmonk/uploads
       - ./.docker/listmonk/config/config.toml:/listmonk/config.toml:ro
     command: >
       sh -c "
