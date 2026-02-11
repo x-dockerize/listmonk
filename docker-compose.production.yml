@@ -1,0 +1,42 @@
+services:
+  listmonk:
+    image: listmonk/listmonk:latest
+    container_name: listmonk
+    restart: unless-stopped
+    env_file: .env
+    command: >
+      sh -c "
+      ./listmonk --install --yes &&
+      ./listmonk
+      "
+    volumes:
+      - ./.docker/listmonk/uploads:/listmonk/uploads
+    networks:
+      - internal-network
+      - postgres-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+
+      # Router
+      - "traefik.http.routers.listmonk.rule=Host(`${LISTMONK_SERVER_HOSTNAME}`)"
+      - "traefik.http.routers.listmonk.entrypoints=websecure"
+      - "traefik.http.routers.listmonk.tls.certresolver=le-cloudflare"
+      - "traefik.http.routers.listmonk.service=listmonk"
+
+      # Service
+      - "traefik.http.services.listmonk.loadbalancer.server.port=9000"
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+networks:
+  internal-network:
+  postgres-network:
+    external: true
+  traefik-network:
+    external: true
