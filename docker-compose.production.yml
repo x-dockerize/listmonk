@@ -6,12 +6,16 @@ services:
     volumes:
       - ./.docker/listmonk/uploads:/listmonk/uploads
       - ./.docker/listmonk/config/config.toml:/listmonk/config.toml:ro
+    # İlk kurulum ve yükseltme işlemlerini tek bir komutla gerçekleştirmek için aşağıdaki
+    # komutu kullanabilirsiniz. Bu komut, listmonk'u kurar, yükseltir ve ardından başlatır.
     command: >
       sh -c "
       ./listmonk --install --yes &&
-      ./listmonk --upgrade &&
+      ./listmonk --upgrade --yes &&
       ./listmonk
       "
+    # İlk kurulumdan sonra sadece listmonk'u başlatmak için aşağıdaki komutu kullanabilirsiniz.
+    # command: ./listmonk
     networks:
       - internal-network
       - postgres-network
@@ -29,7 +33,7 @@ services:
       # Service
       - traefik.http.services.listmonk.loadbalancer.server.port=9000
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:9000/api/health"]
+      test: [ "CMD", "nc", "-z", "localhost", "9000" ]
       interval: 30s
       timeout: 5s
       retries: 5

@@ -1,7 +1,5 @@
 [app]
 address = "0.0.0.0:9000"
-admin_username = "admin"
-admin_password = "change-this-password"
 
 [db]
 host = "postgres"
@@ -9,7 +7,7 @@ port = 5432
 user = "listmonk"
 password = "super-strong-password"
 database = "listmonk"
-sslmode = "disable"
+ssl_mode = "disable"
 
 [upload]
 provider = "local"
