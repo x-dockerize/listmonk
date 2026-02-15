@@ -30,6 +30,17 @@ services:
       - traefik.http.routers.listmonk.tls.certresolver=le-cloudflare
       - traefik.http.routers.listmonk.service=listmonk
 
+      # API Router - IP kısıtlaması ile
+      - traefik.http.routers.listmonk-api.rule=Host(`${LISTMONK_SERVER_HOSTNAME}`) && PathPrefix(`/api/`)
+      - traefik.http.routers.listmonk-api.entrypoints=websecure
+      - traefik.http.routers.listmonk-api.tls.certresolver=le-cloudflare
+      - traefik.http.routers.listmonk-api.service=listmonk
+      - traefik.http.routers.listmonk-api.priority=100
+      - traefik.http.routers.listmonk-api.middlewares=listmonk-api-ipwhitelist
+
+      # API IP Whitelist Middleware
+      - traefik.http.middlewares.listmonk-api-ipwhitelist.ipallowlist.sourcerange=${LISTMONK_API_ALLOWED_IPS}
+
       # Service
       - traefik.http.services.listmonk.loadbalancer.server.port=9000
     healthcheck:
