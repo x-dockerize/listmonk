@@ -40,6 +40,7 @@ services:
 
       # API IP Whitelist Middleware
       - traefik.http.middlewares.listmonk-api-ipwhitelist.ipallowlist.sourcerange=${LISTMONK_API_ALLOWED_IPS}
+      - traefik.http.middlewares.listmonk-api-ipwhitelist.ipallowlist.ipstrategy.depth=1
 
       # Service
       - traefik.http.services.listmonk.loadbalancer.server.port=9000
