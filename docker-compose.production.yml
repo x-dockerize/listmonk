@@ -17,7 +17,6 @@ services:
       - ./.docker/listmonk/uploads:/listmonk/uploads
       - ./.docker/listmonk/config/config.toml:/listmonk/config.toml:ro
     networks:
-      - internal-network
       - postgres-network
       - traefik-network
     labels:
@@ -52,7 +51,6 @@ services:
 
 
 networks:
-  internal-network:
   postgres-network:
     external: true
   traefik-network:
