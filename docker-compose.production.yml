@@ -1,6 +1,6 @@
 services:
   listmonk:
-    image: listmonk/listmonk:latest
+    image: listmonk/listmonk:v6.0.0
     container_name: listmonk
     restart: unless-stopped
     # İlk kurulum ve yükseltme işlemlerini tek bir komutla gerçekleştirmek için aşağıdaki
