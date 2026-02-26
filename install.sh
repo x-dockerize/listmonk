@@ -49,6 +49,15 @@ set_env() {
 # --------------------------------------------------
 read -rp "LISTMONK_SERVER_HOSTNAME (örn: newsletter.example.com): " LISTMONK_SERVER_HOSTNAME
 
+echo
+echo "--- Veritabanı ---"
+read -rp "DB HOST (boş bırakılırsa: postgres): " INPUT_DB_HOST
+DB_HOST="${INPUT_DB_HOST:-postgres}"
+read -rp "DB USER (boş bırakılırsa: listmonk): " INPUT_DB_USER
+DB_USER="${INPUT_DB_USER:-listmonk}"
+read -rsp "DB PASSWORD: " DB_PASSWORD
+echo
+
 # --------------------------------------------------
 # .env Güncelle
 # --------------------------------------------------
@@ -58,12 +67,16 @@ set_env LISTMONK_SERVER_HOSTNAME "$LISTMONK_SERVER_HOSTNAME"
 # config.toml (mevcut değilse template'den oluştur)
 # --------------------------------------------------
 if [ ! -f "$CONFIG_FILE" ]; then
-  DB_PASSWORD="$(gen_password)"
-  sed "s|password = \"super-strong-password\"|password = \"${DB_PASSWORD}\"|" \
+  sed \
+    -e "s|host = \"postgres\"|host = \"${DB_HOST}\"|" \
+    -e "s|user = \"listmonk\"|user = \"${DB_USER}\"|" \
+    -e "s|password = \"super-strong-password\"|password = \"${DB_PASSWORD}\"|" \
     "$CONFIG_TEMPLATE" > "$CONFIG_FILE"
   echo "✅ $CONFIG_FILE oluşturuldu"
 else
   echo "ℹ️  $CONFIG_FILE mevcut, dokunulmadı"
+  DB_HOST=$(grep 'host' "$CONFIG_FILE" | head -1 | sed 's/.*= "\(.*\)"/\1/')
+  DB_USER=$(grep 'user' "$CONFIG_FILE" | head -1 | sed 's/.*= "\(.*\)"/\1/')
   DB_PASSWORD=$(grep 'password' "$CONFIG_FILE" | head -1 | sed 's/.*= "\(.*\)"/\1/')
 fi
 
@@ -75,7 +88,8 @@ echo "==============================================="
 echo "✅ Listmonk yapılandırması hazırlandı"
 echo "-----------------------------------------------"
 echo "🌐 Hostname      : $LISTMONK_SERVER_HOSTNAME"
-echo "🔑 DB Şifresi    : $DB_PASSWORD"
+echo "🗄️ DB Host       : $DB_HOST"
+echo "👤 DB Password   : $DB_USER"
 echo "-----------------------------------------------"
 echo "⚠️  Şifreyi güvenli bir yerde saklayın!"
 echo "==============================================="
