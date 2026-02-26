@@ -3,18 +3,10 @@ services:
     image: listmonk/listmonk:${LISTMONK_VERSION:?required}
     container_name: listmonk
     restart: unless-stopped
-    # İlk kurulum ve yükseltme işlemlerini tek bir komutla gerçekleştirmek için aşağıdaki
-    # komutu kullanabilirsiniz. Bu komut, listmonk'u kurar, yükseltir ve ardından başlatır.
-    command: >
-      sh -c "
-      ./listmonk --install --yes &&
-      ./listmonk --upgrade --yes &&
-      ./listmonk
-      "
-    # İlk kurulumdan sonra sadece listmonk'u başlatmak için aşağıdaki komutu kullanabilirsiniz.
-    # command: ./listmonk
+    command: /listmonk/entrypoint.sh
     volumes:
       - ./.docker/listmonk/uploads:/listmonk/uploads
+      - ./.docker/listmonk/entrypoint.sh:/listmonk/entrypoint.sh:ro
       - ./.docker/listmonk/config/config.toml:/listmonk/config.toml:ro
     networks:
       - postgres-network
