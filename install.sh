@@ -85,11 +85,8 @@ fi
 # --------------------------------------------------
 echo
 echo "==============================================="
-echo "✅ Listmonk yapılandırması hazırlandı"
+echo "✅ Listmonk .env başarıyla hazırlandı!"
 echo "-----------------------------------------------"
-echo "🌐 Hostname      : $LISTMONK_SERVER_HOSTNAME"
-echo "🗄️ DB Host       : $DB_HOST"
-echo "👤 DB Password   : $DB_USER"
+echo "🌐 Hostname      : https://$LISTMONK_SERVER_HOSTNAME"
 echo "-----------------------------------------------"
-echo "⚠️  Şifreyi güvenli bir yerde saklayın!"
 echo "==============================================="
