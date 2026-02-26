@@ -12,6 +12,3 @@ ssl_mode = "disable"
 [upload]
 provider = "local"
 path = "/listmonk/uploads"
-
-[smtp]
-enabled = false
