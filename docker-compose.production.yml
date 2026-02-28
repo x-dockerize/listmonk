@@ -17,14 +17,14 @@ services:
 
       # Router
       - traefik.http.routers.listmonk.rule=Host(`${LISTMONK_SERVER_HOSTNAME:?required}`)
-      - traefik.http.routers.listmonk.entrypoints=websecure
-      - traefik.http.routers.listmonk.tls.certresolver=le-cloudflare
+      - traefik.http.routers.listmonk.entrypoints=https
+      - traefik.http.routers.listmonk.tls.certresolver=cloudflare
       - traefik.http.routers.listmonk.service=listmonk
 
       # API Router - IP kısıtlaması ile
       - traefik.http.routers.listmonk-api.rule=Host(`${LISTMONK_SERVER_HOSTNAME:?required}`) && PathPrefix(`/api/`)
-      - traefik.http.routers.listmonk-api.entrypoints=websecure
-      - traefik.http.routers.listmonk-api.tls.certresolver=le-cloudflare
+      - traefik.http.routers.listmonk-api.entrypoints=https
+      - traefik.http.routers.listmonk-api.tls.certresolver=cloudflare
       - traefik.http.routers.listmonk-api.service=listmonk
       - traefik.http.routers.listmonk-api.priority=100
       - traefik.http.routers.listmonk-api.middlewares=trusted@file
